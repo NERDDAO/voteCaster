@@ -1,12 +1,15 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @next/next/no-img-element */
+
 /* eslint-disable prefer-const */
 "use client";
 
 import { useOptimistic, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { redirectToPolls, savePoll, votePoll } from "../../actions";
-import { Poll } from "../../types";
+import { redirectToPolls, savePoll, votePoll } from "./actions";
+import { Poll } from "./types";
 import clsx from "clsx";
 import { v4 as uuidv4 } from "uuid";
 

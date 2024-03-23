@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable prefer-const */
+import { useState } from "react";
 import Head from "next/head";
+import { PollVoteForm } from "../../form";
 import { Poll } from "../../types";
-import { PollVoteForm } from "../_components/form";
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
 

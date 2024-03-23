@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Link from "next/link";
-import { PollCreateForm } from "./activesession/_components/form";
+import { PollCreateForm } from "./form";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -45,6 +45,9 @@ const Home: NextPage = () => {
                     </div>
                   </button>
                 </Link>
+                
+                <PollCreateForm />
+
               </div>
             </div>
           </div>
