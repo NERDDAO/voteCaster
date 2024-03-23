@@ -1,64 +1,60 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
 import Link from "next/link";
+import { PollCreateForm } from "./polls/_components/form";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 import CreateSession from "~~/components/CreateSession";
 
+
+
 const Home: NextPage = () => {
-    const { address: connectedAddress } = useAccount();
+  const { address: connectedAddress } = useAccount();
 
-    return (
-        <>
-            <div className="bg-gray-900 text-white">
-                <div className="container mx-auto p-4">
-                    <header className="text-center mb-6">
-                        <h1 className="text-3xl font-bold">Livepeer Stream</h1>
-                    </header>
-
-                    <section className="mb-6">
-                        <div className="aspect-w-16 aspect-h-9 bg-gray-800">
-                            <iframe
-                                className="w-full h-full"
-                                src="https://player.livepeer.com/embed?streamId=STREAM_ID&aspectRatio=16:9"
-                                frameborder="0"
-                                allowfullscreen
-                            ></iframe>
-                        </div>
-                    </section>
-
-                    <section className="flex flex-col items-center mb-6">
-                        <h2 className="text-2xl font-semibold mb-4">Vote Now</h2>
-                        <div className="flex space-x-4">
-                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Yes</button>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">No</button>
-                        </div>
-                        <CreateSession />
-                    </section>
-
-                    <section className="mb-6">
-                        <h3 className="text-xl font-semibold mb-4">Results</h3>
-                        <div className="flex justify-center space-x-4">
-                            <div className="flex items-center">
-                                <span className="text-green-500 mr-2">✔️ Yes:</span>
-                                <span id="yesVotes">0</span>
-                            </div>
-                            <div className="flex items-center">
-                                <span className="text-red-500 mr-2">✖️ No:</span>
-                                <span id="noVotes">0</span>
-                            </div>
-                        </div>
-                    </section>
-
-                    <span className="text-center text-gray-400">
-                        <p>&copy; 2024 Livepeer Stream Voting</p>
-                    </span >
-                </div>
+  return (
+    <>
+      <div className="flex flex-col items-center justify-center min-h-screen py-2">
+        <main className="flex flex-col items-center justify-center flex-1 px-4 sm:px-20 text-center">
+          <div className="mb-2">
+            <h1 className="text-lg text-6xl font-bold mb-4">
+              voteCaster
+            </h1>
+            <h2 className="text-lg text-3xl font-bold">
+              Create your interactive role game and enhance your audience participation in the game decisions
+             </h2>
+          </div>
+          <div className="flex flex-col items-center justify-around max-w-4xl my-8 sm:w-full bg-grey rounded-md shadow-xl h-full">
+            <h3 className="text-lg text-2xl font-bold text-white">
+              Create new game
+            </h3>
+            <div className="flex flex-col items-center justify-around max-w-4xl sm:w-full bg-grey rounded-md shadow-xl h-full border border-gray-100">
+              <div>
+                <p>Game conditions</p>
+                <p>
+                  Here the person has to select if its token gated or not, and add the NFT address if its token gates
+                </p>
+                <input type="text" placeholder="Gate NFT address" />
+                <input type="text" placeholder="Gate NFT network" />
+              <Link href="/polls">
+                <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white my-4">
+                  Create Session!
+                  <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30">
+            
+                  </div>
+                </button>
+                <CreateSession/>
+              </Link>
+              
+              </div>
             </div>
-        </>
-    );
+          </div>
+          </main>
+        </div>
+    </>
+  );
 };
 
 export default Home;

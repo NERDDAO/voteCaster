@@ -12,16 +12,16 @@ const imageUrl = `${baseUrl}/thumbnail.jpg`;
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Scaffold-ETH 2 App",
+    default: "voteCaster",
     template: "%s | Scaffold-ETH 2",
   },
-  description: "Built with 🏗 Scaffold-ETH 2",
+  description: "Frame for streaming role games allowing the audience to interact in the game",
   openGraph: {
     title: {
-      default: "Scaffold-ETH 2 App",
+      default: "voteCaster",
       template: "%s | Scaffold-ETH 2",
     },
-    description: "Built with 🏗 Scaffold-ETH 2",
+    description: "Frame for streaming role games allowing the audience to interact in the game",
     images: [
       {
         url: imageUrl,
@@ -32,10 +32,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [imageUrl],
     title: {
-      default: "Scaffold-ETH 2",
+      default: "voteCaster",
       template: "%s | Scaffold-ETH 2",
     },
-    description: "Built with 🏗 Scaffold-ETH 2",
+    description: "Frame for streaming role games allowing the audience to interact in the game",
   },
   icons: {
     icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],

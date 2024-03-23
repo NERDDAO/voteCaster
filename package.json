@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^6",
+    "@types/uuid": "^9",
     "husky": "~8.0.3",
     "lint-staged": "~13.2.2",
     "next": "~14.0.4",
@@ -50,5 +51,10 @@
     "ethers": "^6.11.1",
     "moment-timezone": "^0.5.45",
     "react-datepicker": "^6.5.0"
+    "@farcaster/hub-nodejs": "^0.11.8",
+    "@vercel/kv": "^1.0.1",
+    "satori": "^0.10.13",
+    "sharp": "^0.33.3",
+    "uuid": "^9.0.1"
   }
 }
