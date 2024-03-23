@@ -5,6 +5,11 @@ import Link from "next/link";
 import { PollCreateForm } from "./polls/_components/form";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
+import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Address } from "~~/components/scaffold-eth";
+import CreateSession from "~~/components/CreateSession";
+
+
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
@@ -36,8 +41,11 @@ const Home: NextPage = () => {
               <Link href="/polls">
                 <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white my-4">
                   Create Session!
-                  <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+                  <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30">
+            
+                  </div>
                 </button>
+                <CreateSession/>
               </Link>
               
               </div>

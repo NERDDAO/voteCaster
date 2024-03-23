@@ -37,6 +37,7 @@
     "usehooks-ts@^2.7.2": "patch:usehooks-ts@npm:^2.7.2#./.yarn/patches/usehooks-ts-npm-2.7.2-fceffe0e43.patch"
   },
   "devDependencies": {
+    "@types/react-datepicker": "^6",
     "@types/uuid": "^9",
     "husky": "~8.0.3",
     "lint-staged": "~13.2.2",
@@ -45,6 +46,11 @@
   },
   "packageManager": "yarn@3.2.3",
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^1.5.0",
+    "axios": "^1.6.8",
+    "ethers": "^6.11.1",
+    "moment-timezone": "^0.5.45",
+    "react-datepicker": "^6.5.0"
     "@farcaster/hub-nodejs": "^0.11.8",
     "@vercel/kv": "^1.0.1",
     "satori": "^0.10.13",
