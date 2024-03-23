@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+import CreateSession from "~~/components/CreateSession";
 
 const Home: NextPage = () => {
     const { address: connectedAddress } = useAccount();
@@ -34,6 +35,7 @@ const Home: NextPage = () => {
                             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Yes</button>
                             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">No</button>
                         </div>
+                        <CreateSession />
                     </section>
 
                     <section className="mb-6">

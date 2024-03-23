@@ -1,29 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
 import { useBlockNumber } from "wagmi";
 import { useSigner } from "~~/utils/wagmi-utils"
 import CryptoClock from './ClockComponent';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-async function exampleUsage() {
-    const clock = new CryptoClock();
 
-    // Convert time to Ethereum block
-    const time = '2023-03-23 15:30:00';
-    const timeZone = 'America/New_York';
-    const ethBlock = await clock.convertTimeToEthBlock(time, timeZone);
-    console.log(`Time ${time} (${timeZone}) corresponds to Ethereum block ${ethBlock}`);
 
-    // Convert Ethereum blocks to time
-    const ethBlocks = 100;
-    const targetTime = clock.convertEthBlocksToTime(ethBlocks, timeZone);
-    console.log(`${ethBlocks} Ethereum blocks from now is ${targetTime} (${timeZone})`);
-}
-
-exampleUsage();
 
 const CreateSession = () => {
-    const signer = useSigner();
+
+
     const numba = useBlockNumber();
+    const CryptoClockComponent: React.FC = () => {
+        const [targetTime, setTargetTime] = useState<Date | null>(null);
+        const [targetBlock, setTargetBlock] = useState<number | null>(null);
+        const timeZone = 'America/New_York';
+
+        const handleTargetTimeChange = (date: Date | null) => {
+            setTargetTime(date);
+        };
+
+        const handleConvertTime = () => {
+            if (targetTime) {
+                const clock = new CryptoClock(Number(numba.data));
+                const formattedTime = targetTime.toISOString().slice(0, 19).replace('T', ' ');
+                const ethBlock = clock.convertTimeToEthBlock(formattedTime, timeZone);
+                setTargetBlock(ethBlock);
+            }
+        };
+
+        return (
+            <div>
+                <h2>Crypto Clock</h2>
+                <div>
+                    <label htmlFor="targetTime">Target Time:</label>
+                    <DatePicker
+                        id="targetTime"
+                        selected={targetTime}
+                        onChange={handleTargetTimeChange}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="yyyy-MM-dd HH:mm"
+                        placeholderText="Select date and time"
+                    />
+                    <button onClick={handleConvertTime}>Convert</button>
+                </div>
+                {targetBlock !== null && (
+                    <p>
+                        Time {targetTime?.toString()} ({timeZone}) corresponds to Ethereum block {targetBlock}
+                    </p>
+                )}
+            </div>
+        );
+    };
+
+
+    const signer = useSigner();
+
     const easContractAddress = "0x4200000000000000000000000000000000000021";
     const eas = new EAS(easContractAddress);
     const [title, setTitle] = React.useState("");
@@ -36,7 +72,7 @@ const CreateSession = () => {
         const schemaEncoder = new SchemaEncoder("string sesionTitle,uint32 startBlock");
         const encodedData = schemaEncoder.encodeData([
             { name: "sesionTitle", value: "", type: "string" },
-            { name: "startBlock", value: numba, type: "uint32" }
+            { name: "startBlock", value: Number(numba.data), type: "uint32" }
         ]);
         const tx = await eas.attest({
             schema: schemaUID,
@@ -53,7 +89,8 @@ const CreateSession = () => {
     }
 
 
-    return (<></>);
+    return (<>
+        <CryptoClockComponent /></>);
 }
 
 export default CreateSession;
