@@ -38,16 +38,15 @@ const Home: NextPage = () => {
                 </p>
                 <input type="text" placeholder="Gate NFT address" />
                 <input type="text" placeholder="Gate NFT network" />
-              <Link href="/polls">
-                <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white my-4">
-                  Create Session!
-                  <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30">
-            
-                  </div>
-                </button>
                 <CreateSession/>
-              </Link>
+                <Link href="/polls">
+                  <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white my-4">
+                    Create Session!
+                    <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30">
               
+                    </div>
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
