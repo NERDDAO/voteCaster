@@ -1,7 +1,7 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 import Link from "next/link";
 import { Poll } from "../types";
-import { PollCreateForm } from "./_components/form";
 import { kv } from "@vercel/kv";
 
 const FORTY_FIVE_SECONDS_IN_MS = 45 * 1000;
@@ -54,7 +54,9 @@ export default async function Page() {
           })}
         </div>
         <Link href="/">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Poll</button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create Poll
+          </button>
         </Link>
       </main>
     </div>

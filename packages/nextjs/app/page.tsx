@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Link from "next/link";
-import { PollCreateForm } from "./polls/_components/form";
+import { PollCreateForm } from "./activesession/_components/form";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -32,18 +32,16 @@ const Home: NextPage = () => {
             </h3>
             <div className="flex flex-col items-center justify-around max-w-4xl sm:w-full bg-grey rounded-md shadow-xl h-full border border-gray-100">
               <div>
-                <p>Game conditions</p>
                 <p>
-                  Here the person has to select if its token gated or not, and add the NFT address if its token gates
+                  Select if its token gated or not, and add the NFT address if its token gates
                 </p>
                 <input type="text" placeholder="Gate NFT address" />
                 <input type="text" placeholder="Gate NFT network" />
                 <CreateSession/>
-                <Link href="/polls">
+                <Link href="/activesession">
                   <button className="group relative h-12 w-48 overflow-hidden rounded-2xl bg-blue-500 text-lg font-bold text-white my-4">
                     Create Session!
                     <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30">
-              
                     </div>
                   </button>
                 </Link>
