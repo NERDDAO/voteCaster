@@ -39,6 +39,16 @@ app.frame('/', (c) => {
         ]
     })
 })
+/*
+app.frame('/vote', (c) => {
+    return c.res({
+        image: (<div />)
+    })
+
+});
+*/
+
+
 devtools(app, { serveStatic })
 
 export const GET = handle(app)
