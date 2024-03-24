@@ -1,7 +1,10 @@
 # 🗳️ voteCaster
-We have built a frame for interactive online role games. The game master can create a frame with the session streaming and a vote poll where the Farcaster audience can interact with the game setting the actions difficulty.
 
-# 🏗 Built using Scaffold-ETH 2
+<h4 align="center">
+  <a href="https://ethglobal.com/showcase/votecaster-9njv6">Documentation</a> |
+  <a href="https://vote-caster.vercel.app/">Live Website</a>
+</h4>
+We have built a frame for interactive online role games. The game master can create a frame with the session streaming and a vote poll where the Farcaster audience can interact with the game setting the actions difficulty.
 
 # Project Description
 Project Description
@@ -23,7 +26,7 @@ Our tech stack is not a static monolith; it is an ever-evolving ecosystem that a
 
 In the spirit of true blockchain developers, we are constantly seeking new and innovative ways to revolutionize the gaming industry through the power of decentralization and Web3 technologies. Our commitment to transparency, security, and user experience is unwavering, and we remain steadfast in our pursuit of creating a truly immersive and decentralized gaming ecosystem that transcends the limitations of traditional gaming platforms.
 
-How it's Made
+# How it's Made
 Building this interactive online role-playing game frame has been an exhilarating journey, one that has allowed us to push the boundaries of what is possible in the realm of decentralized gaming. At the core of our tech stack lies Scaffold-eth 2, a robust framework that empowers us to seamlessly construct Ethereum contracts and frontends, providing a solid foundation for our decentralized application.
 
 To truly harness the power of the Farcaster ecosystem, we have integrated Pinata, a versatile platform that enables us to connect and interact with the Farcaster Read and Write API. This integration has been instrumental in creating a hub where game masters can orchestrate their role-playing sessions, while the Farcaster audience can participate through interactive voting polls, shaping the game's actions and difficulty levels.
@@ -39,6 +42,8 @@ Delivering a seamless streaming experience was crucial for our project, and that
 One particularly notable aspect of our project is the seamless integration of Proof of Knowledge, a cutting-edge protocol that creates interconnected data units, or kEngrams, that validate and enhance one another. This integration will unlock new realms of knowledge-driven gameplay, pushing the boundaries of what is possible in the realm of decentralized gaming.
 
 Our tech stack is not a static monolith; it is an ever-evolving ecosystem that adapts to the latest advancements in the Web3 space. We are constantly seeking new and innovative ways to revolutionize the gaming industry through the power of decentralization and Web3 technologies. Our commitment to transparency, security, and user experience is unwavering, and we remain steadfast in our pursuit of creating a truly immersive and decentralized gaming ecosystem that transcends the limitations of traditional gaming platforms.
+
+# 🏗 Built using Scaffold-ETH 2
 
 <h4 align="center">
   <a href="https://docs.scaffoldeth.io">Documentation</a> |
