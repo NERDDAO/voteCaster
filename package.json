@@ -41,7 +41,7 @@
         "@types/uuid": "^9",
         "husky": "~8.0.3",
         "lint-staged": "~13.2.2",
-        "next": "~14.0.4",
+        "next": "~14.1.0",
         "vercel": "latest"
     },
     "packageManager": "yarn@3.2.3",

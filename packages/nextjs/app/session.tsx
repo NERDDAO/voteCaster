@@ -12,6 +12,15 @@ import { redirectToPolls, savePoll, votePoll } from "./actions";
 import { Poll, Session } from "./types";
 import clsx from "clsx";
 import { v4 as uuidv4 } from "uuid";
+import CryptoClock from "../components/ClockComponent";
+import DatePicker from "react-datepicker";
+import { useBlockNumber } from "wagmi";
+import { useSigner } from "~~/utils/wagmi-utils";
+import { EAS, SchemaEncoder } from "@ethereum-attestation-service/eas-sdk";
+import "react-datepicker/dist/react-datepicker.css";
+import React from 'react';
+
+
 
 type PollState = {
   newPoll: Session;
@@ -20,7 +29,54 @@ type PollState = {
   voted?: boolean;
 };
 
+
+const CryptoClockComponent: React.FC = () => {
+  const numba = useBlockNumber();
+  const [targetTime, setTargetTime] = useState<Date | null>(null);
+  const [targetBlock, setTargetBlock] = useState<number | null>(null);
+  const timeZone = "America/New_York";
+
+  const handleTargetTimeChange = (date: Date | null) => {
+    setTargetTime(date);
+  };
+
+  const handleConvertTime = () => {
+    if (targetTime) {
+      const clock = new CryptoClock(Number(numba.data));
+      const formattedTime = targetTime.toISOString().slice(0, 19).replace("T", " ");
+      const ethBlock = clock.convertTimeToEthBlock(formattedTime, timeZone);
+      setTargetBlock(ethBlock);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Crypto Clock</h2>
+      <div>
+        <label htmlFor="targetTime">Target Time:</label>
+        <DatePicker
+          id="targetTime"
+          selected={targetTime}
+          onChange={handleTargetTimeChange}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          dateFormat="yyyy-MM-dd HH:mm"
+          placeholderText="Select date and time"
+        />
+        <button onClick={handleConvertTime}>Convert</button>
+      </div>
+      {targetBlock !== null && (
+        <p>
+          Time {targetTime?.toString()} ({timeZone}) corresponds to Ethereum block {targetBlock}
+        </p>
+      )}
+    </div>
+  );
+};
+
 export function PollCreateForm() {
+  const numba = useBlockNumber();
   let formRef = useRef<HTMLFormElement>(null);
   let [state, mutate] = useOptimistic({ pending: false }, function createReducer(state, newPoll: PollState) {
     if (newPoll.newPoll) {
@@ -34,21 +90,64 @@ export function PollCreateForm() {
     }
   });
 
-  let pollStub = {
-    id: uuidv4(),
+  ////Attestation
+const signer = useSigner();
+  
+const Attest = async (title: string) => {
+  
+
+  const easContractAddress = "0x4200000000000000000000000000000000000021";
+  const eas = new EAS(easContractAddress);
+  //const [title, setTitle] = React.useState("");
+  if (!signer) return null;
+  eas.connect(signer);
+
+  const schemaUID = "0x4e36b4880c16106a434c64c4217d519f98711ec82b44c09b0d3e10971bbb11e8";
+  // Signer must be an ethers-like signer.
+  // Initialize SchemaEncoder with the schema string
+  const schemaEncoder = new SchemaEncoder("string sesionTitle,uint32 startBlock");
+  const encodedData = schemaEncoder.encodeData([
+    { name: "sesionTitle", value: title, type: "string" },
+    { name: "startBlock", value: Number(numba.data), type: "uint32" },
+  ]);
+  const tx = await eas.attest({
+    schema: schemaUID,
+    data: {
+      recipient: "0x0000000000000000000000000000000000000000",
+      expirationTime: 0n,
+      revocable: true, // Be aware that if your schema is not revocable, this MUST be false
+      data: encodedData,
+    },
+  });
+  const newAttestationUID = await tx.wait();
+  return (newAttestationUID)
+  console.log("New attestation UID:", newAttestationUID);
+};
+
+  const getIdAtt = async () => {
+    //trying to get attestation
+    const idAtt = await Attest("title");
+    console.log(idAtt);
+    return idAtt;
+  };
+
+  const pollStub = {
+    id: getIdAtt?.toString(),
     created_at: new Date().getTime(),
     title: "",
     gateNFT: "",
     streamLink: "",
-    difficulty5: "",
-    difficulty10: "",
-    difficulty15: "",
-    difficulty20: "",
+    difficulty5: "5",
+    difficulty10: "10",
+    difficulty15: "15",
+    difficulty20: "20",
     votes1: 0,
     votes2: 0,
     votes3: 0,
     votes4: 0,
   };
+
+  //pollStub.id = getIdAtt?.toString(); // Update the id property with the attestation result
 
   let saveWithNewPoll = savePoll.bind(null, pollStub);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -117,6 +216,7 @@ export function PollCreateForm() {
             type="text"
             name="streamLink"
           />
+          {/* <CryptoClockComponent /> */}
           {/* <input
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             maxLength={150}
@@ -183,6 +283,7 @@ export function PollCreateForm() {
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md w-24 focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
                 state.pending && "bg-gray-700 cursor-not-allowed",
               )}
+              onClick={() => Attest("title")}
               type="submit"
               disabled={state.pending}
             >

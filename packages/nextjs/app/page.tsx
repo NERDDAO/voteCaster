@@ -7,7 +7,7 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
-// igitmport CreateSession from "~~/components/CreateSession";
+// import CreateSession from "~~/components/CreateSession";
 
 
 
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             </h3>
             <div className="flex flex-col items-center justify-around max-w-4xl sm:w-full bg-grey rounded-md shadow-xl h-full border border-gray-100">
              
-                <PollCreateForm />
+              <PollCreateForm />
 
             </div>
           </div>
