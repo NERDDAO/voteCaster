@@ -3,19 +3,21 @@
 /* eslint-disable prefer-const */
 import { useState } from "react";
 import Head from "next/head";
-import { PollVoteForm } from "../../form";
-import { Poll } from "../../types";
+import { PollVoteForm } from "../../session";
+import { Session } from "../../types";
 import { kv } from "@vercel/kv";
 import { Metadata, ResolvingMetadata } from "next";
 
-async function getPoll(id: string): Promise<Poll> {
+async function getPoll(id: string): Promise<Session> {
   let nullPoll = {
     id: "",
     title: "No poll found",
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
+    gateNFT: "",
+    streamLink: "",
+    difficulty5: "",
+    difficulty10: "",
+    difficulty15: "",
+    difficulty20: "",
     votes1: 0,
     votes2: 0,
     votes3: 0,
@@ -24,7 +26,7 @@ async function getPoll(id: string): Promise<Poll> {
   };
 
   try {
-    let poll: Poll | null = await kv.hgetall(`poll:${id}`);
+    let poll: Session | null = await kv.hgetall(`poll:${id}`);
 
     if (!poll) {
       return nullPoll;
@@ -52,7 +54,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     "fc:frame:post_url": `${process.env["HOST"]}/api/vote?id=${id}`,
     "fc:frame:image": `${process.env["HOST"]}/api/image?id=${id}`,
   };
-  [poll.option1, poll.option2, poll.option3, poll.option4]
+  [poll.difficulty5, poll.difficulty10, poll.difficulty15, poll.difficulty20]
     .filter(o => o !== "")
     .map((option, index) => {
       fcMetadata[`fc:frame:button:${index + 1}`] = option;
@@ -70,7 +72,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     metadataBase: new URL(process.env["HOST"] || ""),
   };
 }
-function getMeta(poll: Poll) {
+function getMeta(poll: Session) {
   // This didn't work for some reason
   return (
     <Head>

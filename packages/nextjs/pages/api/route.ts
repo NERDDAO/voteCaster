@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { POLL_EXPIRY, Poll } from "../../types";
+import { POLL_EXPIRY, Session } from "../../app/types";
 import { Message, getSSLHubRpcClient } from "@farcaster/hub-nodejs";
 import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         await multi.exec();
       }
 
-      let poll: Poll | null = await kv.hgetall(`poll:${pollId}`);
+      let poll: Session | null = await kv.hgetall(`poll:${pollId}`);
 
       if (!poll) {
         return res.status(400).send("Missing poll ID");

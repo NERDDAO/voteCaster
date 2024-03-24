@@ -9,13 +9,13 @@
 import { useOptimistic, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { redirectToPolls, savePoll, votePoll } from "./actions";
-import { Poll } from "./types";
+import { Poll, Session } from "./types";
 import clsx from "clsx";
 import { v4 as uuidv4 } from "uuid";
 
 type PollState = {
-  newPoll: Poll;
-  updatedPoll?: Poll;
+  newPoll: Session;
+  updatedPoll?: Session;
   pending: boolean;
   voted?: boolean;
 };
@@ -38,15 +38,18 @@ export function PollCreateForm() {
     id: uuidv4(),
     created_at: new Date().getTime(),
     title: "",
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
+    gateNFT: "",
+    streamLink: "",
+    difficulty5: "",
+    difficulty10: "",
+    difficulty15: "",
+    difficulty20: "",
     votes1: 0,
     votes2: 0,
     votes3: 0,
     votes4: 0,
   };
+
   let saveWithNewPoll = savePoll.bind(null, pollStub);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let [isPending, startTransition] = useTransition();
@@ -64,10 +67,12 @@ export function PollCreateForm() {
             let newPoll = {
               ...pollStub,
               title: formData.get("title") as string,
-              option1: formData.get("option1") as string,
-              option2: formData.get("option2") as string,
-              option3: formData.get("option3") as string,
-              option4: formData.get("option4") as string,
+              gateNFT: formData.get("Gate NFT") as string,
+              streamLink:formData.get("stream Link") as string,
+              difficulty5: formData.get("difficulty5") as string,
+              difficulty10: formData.get("difficulty10") as string,
+              difficulty15: formData.get("difficulty15") as string,
+              difficulty20: formData.get("difficulty20") as string,
               votes1: 0,
               votes2: 0,
               votes3: 0,
@@ -95,39 +100,83 @@ export function PollCreateForm() {
             name="title"
           />
           <input
-            aria-label="Option 1"
+            aria-label="Gate NFT's address"
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             maxLength={150}
-            placeholder="Option 1"
+            placeholder="NFT for gating..."
             required
             type="text"
-            name="option1"
+            name="gateNFT"
           />
           <input
-            aria-label="Option 2"
+            aria-label="Stream link"
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             maxLength={150}
-            placeholder="Option 2"
+            placeholder="https://..."
             required
             type="text"
-            name="option2"
+            name="streamLink"
           />
-          <input
-            aria-label="Option 3"
+          {/* <input
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             maxLength={150}
-            placeholder="Option 3 (optional)"
-            type="text"
-            name="option3"
+            id="difficulty5"
+            type="round"
+            name="difficulty5"
+            value="5" 
           />
+          <label htmlFor="difficulty5" className="flex flex-col items-center cursor-pointer">
+            <span className="w-8 h-8 border-2 border-gray-400 rounded-full flex items-center justify-center">
+              <span className="w-4 h-4 bg-transparent rounded-full"></span>
+            </span>
+            <span className="text-sm mt-1">5</span>
+          </label>
+
           <input
-            aria-label="Option 4"
             className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
             maxLength={150}
-            placeholder="Option 4 (optional)"
-            type="text"
-            name="option4"
+            id="difficulty10"
+            type="round"
+            name="difficulty10"
+            value="10" 
           />
+          <label htmlFor="difficulty5" className="flex flex-col items-center cursor-pointer">
+            <span className="w-8 h-8 border-2 border-gray-400 rounded-full flex items-center justify-center">
+              <span className="w-4 h-4 bg-transparent rounded-full"></span>
+            </span>
+            <span className="text-sm mt-1">10</span>
+          </label>
+
+          <input
+            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            maxLength={150}
+            id="difficulty15"
+            type="round"
+            name="difficulty15"
+            value="15" 
+          />
+          <label htmlFor="difficulty5" className="flex flex-col items-center cursor-pointer">
+            <span className="w-8 h-8 border-2 border-gray-400 rounded-full flex items-center justify-center">
+              <span className="w-4 h-4 bg-transparent rounded-full"></span>
+            </span>
+            <span className="text-sm mt-1">15</span>
+          </label>
+
+          <input
+            className="pl-3 pr-28 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
+            maxLength={150}
+            id="difficulty20"
+            type="round"
+            name="difficulty20"
+            value="20" 
+          />
+          <label htmlFor="difficulty5" className="flex flex-col items-center cursor-pointer">
+            <span className="w-8 h-8 border-2 border-gray-400 rounded-full flex items-center justify-center">
+              <span className="w-4 h-4 bg-transparent rounded-full"></span>
+            </span>
+            <span className="text-sm mt-1">20</span>
+          </label> */}
+
           <div className={"pt-2 flex justify-end"}>
             <button
               className={clsx(
@@ -147,10 +196,10 @@ export function PollCreateForm() {
   );
 }
 
-function PollOptions({ poll, onChange }: { poll: Poll; onChange: (index: number) => void }) {
+function PollOptions({ poll, onChange }: { poll: Session; onChange: (index: number) => void }) {
   return (
     <div className="mb-4 text-left">
-      {[poll.option1, poll.option2, poll.option3, poll.option4]
+      {[poll.difficulty5, poll.difficulty10, poll.difficulty15, poll.difficulty20]
         .filter(e => e !== "")
         .map((option, index) => (
           <label key={index} className="block">
@@ -162,7 +211,7 @@ function PollOptions({ poll, onChange }: { poll: Poll; onChange: (index: number)
   );
 }
 
-function PollResults({ poll }: { poll: Poll }) {
+function PollResults({ poll }: { poll: Session }) {
   return (
     <div className="mb-4">
       <img src={`/api/image?id=${poll.id}&results=true&date=${Date.now()}`} alt="poll results" />
@@ -170,7 +219,7 @@ function PollResults({ poll }: { poll: Poll }) {
   );
 }
 
-export function PollVoteForm({ poll, viewResults }: { poll: Poll; viewResults?: boolean }) {
+export function PollVoteForm({ poll, viewResults }: { poll: Session; viewResults?: boolean }) {
   const [selectedOption, setSelectedOption] = useState(-1);
   const router = useRouter();
   const searchParams = useSearchParams();

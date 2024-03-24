@@ -4,18 +4,20 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { POLL_EXPIRY, Poll } from "./types";
+import { POLL_EXPIRY, Session } from "./types";
 import { kv } from "@vercel/kv";
 
-export async function savePoll(poll: Poll, formData: FormData) {
+export async function savePoll(poll: Session, formData: FormData) {
   let newPoll = {
     ...poll,
     created_at: Date.now(),
     title: formData.get("title") as string,
-    option1: formData.get("option1") as string,
-    option2: formData.get("option2") as string,
-    option3: formData.get("option3") as string,
-    option4: formData.get("option4") as string,
+    gateNFT: formData.get("Gate NFT") as string,
+    streamLink:formData.get("stream Link") as string,
+    difficulty5: formData.get("difficulty5") as string,
+    difficulty10: formData.get("difficulty10") as string,
+    difficulty15: formData.get("difficulty15") as string,
+    difficulty20: formData.get("difficulty20") as string,
   };
   await kv.hset(`poll:${poll.id}`, poll);
   await kv.expire(`poll:${poll.id}`, POLL_EXPIRY);
@@ -28,7 +30,7 @@ export async function savePoll(poll: Poll, formData: FormData) {
   redirect(`/polls/${poll.id}`);
 }
 
-export async function votePoll(poll: Poll, optionIndex: number) {
+export async function votePoll(poll: Session, optionIndex: number) {
   await kv.hincrby(`poll:${poll.id}`, `votes${optionIndex}`, 1);
 
   revalidatePath(`/polls/${poll.id}`);
