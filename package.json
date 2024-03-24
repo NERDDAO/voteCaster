@@ -46,6 +46,7 @@
     },
     "packageManager": "yarn@3.2.3",
     "dependencies": {
+        "@airstack/frog": "^0.0.7",
         "@ethereum-attestation-service/eas-sdk": "^1.5.0",
         "@farcaster/hub-nodejs": "^0.11.8",
         "@vercel/kv": "^1.0.1",

@@ -1,58 +1,53 @@
-// /** @jsxImportSource frog/jsx */
-// // import { Button, Frog, TextInput } from "frog";
-// import { devtools } from "frog/dev";
-// import { handle } from "frog/next";
-// import { serveStatic } from "frog/serve-static";
+/** @jsxImportSource frog/jsx */   
+import { Button, Frog, TextInput } from 'frog';
+import { handle } from 'frog/next';
+import { devtools } from 'frog/dev';
+import { serveStatic } from 'frog/serve-static';
 
-// const app = new Frog({
-//   basePath: "/api",
-// });
+type State = {
+    count: number;
+};
 
-// app.frame("/", c => {
-//   const { buttonValue, status } = c;
-//   return c.res({
-//     image: (
-//       <div style={{ color: "red", display: "flex", fontSize: 60, flexDirection: "column" }}>
-//         {status === "initial" ? "Select your fruit!" : `Selected: ${buttonValue}`}
-//         <div
-//           className="min-h-screen flex items-center justify-center"
-//           style={{ color: "red", display: "flex", fontSize: 60, flexDirection: "column" }}
-//         >
-//           <div
-//             className="bg-gray-700 p-8 rounded-lg shadow-lg max-w-md w-full"
-//             style={{ color: "red", display: "flex", fontSize: 60, flexDirection: "column" }}
-//           >
-//             <div className="mb-4" style={{ color: "red", display: "flex", fontSize: 60 }}>
-//               <h2 className="text-xl font-semibold">Vote Expires in:</h2>
-//               <p id="countdown" className="text-2xl font-bold">
-//                 30s
-//               </p>
-//             </div>
-//             <div className="mb-8" style={{ color: "red", display: "flex", fontSize: 60 }}>
-//               <h3 className="text-lg font-semibold">Scenario:</h3>
-//               <p className="text-lg">Does Grok Make the Jump?</p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     ),
-//     intents: [
-//     //   <Button value="Easy">Easy(DC5)</Button>,
-//     //   <Button value="Medium">Medium(DC10)</Button>,
-//     //   <Button value="Hard">Hard(DC15)</Button>,
-//     ],
-//   });
-// });
-// /*
-// app.frame('/vote', (c) => {
-//     return c.res({
-//         image: (<div />)
-//     })
+export const app = new Frog<{ State: State }>({
+    initialState: {
+        count: 0,
+    },
+    basePath: '/api',
+    imageOptions: { height: 600, width: 600 },
+});
 
-// });
-// */
+app.frame('/', (c) => {
+    const { buttonValue, inputText, deriveState } = c;
 
-// devtools(app, { serveStatic });
+    const state = deriveState((previousState) => {
+        if (buttonValue === 'increment') previousState.count++;
+        if (buttonValue === 'decrement') previousState.count--;
+        if (inputText) {
+            const parsedCount = parseInt(inputText, 10);
+            if (!isNaN(parsedCount)) {
+                previousState.count = parsedCount;
+            }
+        }
+    });
 
-// export const GET = handle(app);
-// export const POST = handle(app);
+    return c.res({
+        image: (
+            <div style={{ color: 'white', display: 'flex', flexDirection: 'column', fontSize: 30, alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', backgroundColor: '#1e1e1e' }}>
+                <p style={{ marginBottom: 20 }}>Live Difficulty</p>
+                <p>Count: {state.count}</p>
+                <p> Current DC: {state.count > 5 ? 'High (15DC)' : 'Low(10DC)'}</p>
+            </div>
+        ),
+        intents: [
+            <TextInput placeholder="Enter count..." />,
+            <Button value="increment">Increment</Button>,
+            <Button value="decrement">Decrement</Button>,
+            <Button.Reset>Reset</Button.Reset>,
+        ],
+    });
+});
+
+devtools(app, { serveStatic });
+
+export const GET = handle(app);
+export const POST = handle(app);
