@@ -15,7 +15,7 @@ const fontData = fs.readFileSync(fontPath);
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const pollId = req.query["id"];
-    // const fid = parseInt(req.query['fid']?.toString() || '')
+    const fid = parseInt(req.query["fid"]?.toString() || "");
     if (!pollId) {
       return res.status(400).send("Missing poll ID");
     }
@@ -27,10 +27,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const showResults = req.query["results"] === "true";
-    // let votedOption: number | null = null
-    // if (showResults && fid > 0) {
-    //     votedOption = await kv.hget(`poll:${pollId}:votes`, `${fid}`) as number
-    // }
+    let votedOption: number | null = null
+    if (showResults && fid > 0) {
+      votedOption = (await kv.hget(`poll:${pollId}:votes`, `${fid}`)) as number;
+    }
 
     const pollOptions = [poll.difficulty5, poll.difficulty10, poll.difficulty15, poll.difficulty20].filter(
       option => option !== "",
@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               </div>
             );
           })}
-          {/*{showResults ? <h3 style={{color: "darkgray"}}>Total votes: {totalVotes}</h3> : ''}*/}
+          {showResults ? <h3 style={{ color: "darkgray" }}>Total votes: {totalVotes}</h3> : ""}
         </div>
       </div>,
       {

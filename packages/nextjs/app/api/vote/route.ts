@@ -4,8 +4,8 @@ import { kv } from "@vercel/kv";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { POLL_EXPIRY, Session } from "~~/app/types";
 
-const HUB_URL = process.env["HUB_URL"];
-const client = HUB_URL ? getSSLHubRpcClient(HUB_URL) : undefined;
+const hubRpcEndpoint = "hub-grpc.pinata.cloud";
+const client = getSSLHubRpcClient(hubRpcEndpoint);
 
 export const maxDuration = 300; // This function can run for a maximum of 5 seconds
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
