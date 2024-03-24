@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
@@ -160,30 +161,39 @@ const Attest = async (title: string) => {
           className="relative my-8"
           ref={formRef}
           action={saveWithNewPoll}
-          onSubmit={event => {
+          onSubmit={async event => {
             event.preventDefault();
-            let formData = new FormData(event.currentTarget);
+            let attestId = await Attest("title");
+            console.log(attestId);
+            let formData = new FormData(formRef.current!);
+            console.log(formData);
             let newPoll = {
               ...pollStub,
+              id: attestId as string,
               title: formData.get("title") as string,
-              gateNFT: formData.get("Gate NFT") as string,
-              streamLink:formData.get("stream Link") as string,
-              difficulty5: formData.get("difficulty5") as string,
-              difficulty10: formData.get("difficulty10") as string,
-              difficulty15: formData.get("difficulty15") as string,
-              difficulty20: formData.get("difficulty20") as string,
+              gateNFT: formData.get("gateNFT") as string,
+              streamLink:formData.get("streamLink") as string,
+              difficulty5: "5",
+              difficulty10: "10",
+              difficulty15: "15",
+              difficulty20: "20",
               votes1: 0,
               votes2: 0,
               votes3: 0,
               votes4: 0,
             };
+            console.log(newPoll);
+            console.log("newPollId", newPoll.id);
+
 
             formRef.current?.reset();
+
             startTransition(async () => {
               mutate({
                 newPoll,
                 pending: true,
               });
+              console.log("mutate done")
 
               await savePoll(newPoll, formData);
             });
@@ -283,7 +293,6 @@ const Attest = async (title: string) => {
                 "flex items-center p-1 justify-center px-4 h-10 text-lg border bg-blue-500 text-white rounded-md w-24 focus:outline-none focus:ring focus:ring-blue-300 hover:bg-blue-700 focus:bg-blue-700",
                 state.pending && "bg-gray-700 cursor-not-allowed",
               )}
-              onClick={() => Attest("title")}
               type="submit"
               disabled={state.pending}
             >

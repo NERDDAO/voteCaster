@@ -12,19 +12,37 @@ export async function savePoll(poll: Session, formData: FormData) {
     ...poll,
     created_at: Date.now(),
     title: formData.get("title") as string,
-    gateNFT: formData.get("Gate NFT") as string,
-    streamLink:formData.get("stream Link") as string,
-    difficulty5: formData.get("difficulty5") as string,
-    difficulty10: formData.get("difficulty10") as string,
-    difficulty15: formData.get("difficulty15") as string,
-    difficulty20: formData.get("difficulty20") as string,
+    gateNFT: formData.get("gateNFT") as string,
+    streamLink:formData.get("streamLink") as string,
+    difficulty5: "5",
+    difficulty10: "10",
+    difficulty15: "15",
+    difficulty20: "20",
   };
-  await kv.hset(`poll:${poll.id}`, poll);
-  await kv.expire(`poll:${poll.id}`, POLL_EXPIRY);
-  await kv.zadd("polls_by_date", {
-    score: Number(poll.created_at),
-    member: newPoll.id,
-  });
+
+  try {
+    await kv.hset(`poll:${poll.id}`, poll);
+  } catch (error) {
+    console.error("Error setting poll in KV store:", error);
+    // Handle the error appropriately
+  }
+
+  try {
+    await kv.expire(`poll:${poll.id}`, POLL_EXPIRY);
+  } catch (error) {
+    console.error("Error setting expiration for poll in KV store:", error);
+    // Handle the error appropriately
+  }
+
+  try {
+    await kv.zadd("polls_by_date", {
+      score: Number(poll.created_at),
+      member: newPoll.id,
+    });
+  } catch (error) {
+    console.error("Error adding poll to sorted set in KV store:", error);
+    // Handle the error appropriately
+  }
 
   revalidatePath("/polls");
   redirect(`/polls/${poll.id}`);

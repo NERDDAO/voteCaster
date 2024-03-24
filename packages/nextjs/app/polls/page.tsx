@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable prefer-const */
 import Link from "next/link";
-import { Poll } from "../types";
+import { Session } from "../types";
 import { kv } from "@vercel/kv";
 
-const FORTY_FIVE_SECONDS_IN_MS = 45 * 1000;
+const SEVEN_DAYS_IN_MS = 1000 * 60 * 60 * 24 * 7;
 
 async function getPolls() {
   try {
-    let pollIds = await kv.zrange("polls_by_date", Date.now(), Date.now() - FORTY_FIVE_SECONDS_IN_MS, {
+    let pollIds = await kv.zrange("polls_by_date", Date.now(), Date.now() - SEVEN_DAYS_IN_MS, {
       byScore: true,
       rev: true,
       count: 100,
@@ -24,7 +24,7 @@ async function getPolls() {
       multi.hgetall(`poll:${id}`);
     });
 
-    let items: Poll[] = await multi.exec();
+    let items: Session[] = await multi.exec();
     return items.map(item => {
       return { ...item };
     });

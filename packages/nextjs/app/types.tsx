@@ -28,4 +28,4 @@ export type Poll = {
   created_at: number;
 };
 
-export const POLL_EXPIRY = 45 * 1000; // Expire polls after 3 months
+export const POLL_EXPIRY = 45 * 1000; // Expire polls after 45s
