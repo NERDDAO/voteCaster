@@ -1,8 +1,8 @@
 /** @jsxImportSource frog/jsx */
-import { Button, Frog, TextInput } from 'frog'
+import { Button, Frog, TextInput, parseEther } from 'frog'
 import { handle } from 'frog/next'
-import { devtools } from 'frog/dev'
-import { serveStatic } from 'frog/serve-static'
+import { abi } from "./abi";
+
 
 const app = new Frog({
     basePath: '/api',
@@ -33,13 +33,45 @@ app.frame('/', (c) => {
             </div>
         ),
         intents: [
-            <Button value="Easy">Easy(DC5)</Button>,
-            <Button value="Medium">Medium(DC10)</Button>,
-            <Button value="Hard">Hard(DC15)</Button>
+            <TextInput placeholder="Value (ETH)" />,
+            <Button.Transaction target="/send-ether">Send Ether</Button.Transaction>,
+            <Button.Transaction target="/mint">Mint</Button.Transaction>,
         ]
     })
 })
-devtools(app, { serveStatic })
 
+app.frame('/finish', (c) => {
+    const { transactionId } = c
+    return c.res({
+        image: (
+            <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+                Transaction ID: {transactionId}
+            </div>
+        )
+    })
+})
+
+app.transaction('/send-ether', (c) => {
+    const { inputText } = c
+    // Send transaction response.
+    return c.send({
+        chainId: 'eip155:10',
+        to: '0xd2135CfB216b74109775236E36d4b433F1DF507B',
+        value: parseEther(inputText || '0'),
+    })
+})
+
+app.transaction('/mint', (c) => {
+    const { inputText } = c
+    // Contract transaction response.
+    return c.contract({
+        abi,
+        chainId: 'eip155:10',
+        functionName: 'mint',
+        args: [69420n],
+        to: '0xd2135CfB216b74109775236E36d4b433F1DF507B',
+        value: parseEther(inputText || '0')
+    })
+})
 export const GET = handle(app)
 export const POST = handle(app)
